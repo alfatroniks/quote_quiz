@@ -1,4 +1,4 @@
-#quote_quiz
+# Famous Quote Quiz
 
 ```
 composer install
