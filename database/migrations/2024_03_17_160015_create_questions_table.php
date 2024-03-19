@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string('question');
             $table->json('answers')->nullable();
-            $table->tinyInteger('correct');
+            $table->tinyInteger('correct_answer');
             $table->foreignId('quiz_mode_id')
                 ->nullable()
                 ->constrained()

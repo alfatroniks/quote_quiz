@@ -10,8 +10,8 @@ class Question extends Model
     protected $fillable = [
         'question',
         'answers',
-        'correct',
-        'quiz_mode',
+        'correct_answer',
+        'quiz_mode_id',
     ];
 
     public function mode(): BelongsTo

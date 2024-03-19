@@ -6,11 +6,22 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class QuestionRequest extends FormRequest
 {
+    protected function prepareForValidation()
+    {
+        if (is_array($this->answers)) {
+            $this->merge([
+                'answers' => json_encode($this->answers),
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [
             'question' => ['required'],
-            'mode' => ['required', 'integer'],
+            'answers' => ['required', 'json'],
+            'correct_answer' => ['required', 'integer'],
+            'quiz_mode_id' => ['required', 'integer'],
         ];
     }
 

@@ -2,15 +2,17 @@
 import {ref, onMounted, onUnmounted} from 'vue';
 import { useQuizStore } from '@/stores/quiz';
 import router from "@/router";
+import {formatTime} from "@/utils/formatTime";
+import VButton from '@/components/VButton';
 
 const quizStore = useQuizStore();
 const currentQuestion = ref(null);
 const isAnswered = ref(false);
 const resultMessage = ref('');
-const totalTime = ref(15); //todo get from settings
+const totalTime = ref(quizStore.timeLimit);
 
 let timerRunning = false;
-let isPaused = false;
+let isPaused = false; //not use pause for now
 let timerInterval = null;
 
 function submitAnswer(answer) {
@@ -32,15 +34,15 @@ function nextQuestion() {
 }
 
 function finishQuiz() {
-    //todo write result
+    quizStore.saveTimeUsed(totalTime.value);
     router.push('/result');
 }
 
 function startTimer() {
-    if (timerRunning || isPaused) return;
+    if (timerRunning) return;
     timerRunning = true;
     timerInterval = setInterval(() => {
-        if (totalTime.value > 0 && !isPaused) {
+        if (totalTime.value > 0) {
             totalTime.value--;
         } else if (totalTime.value <= 0) {
             stopTimer();
@@ -57,12 +59,6 @@ function stopTimer() {
     }
 }
 
-function formatTime(time) {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-}
-
 onMounted(async () => {
     await quizStore.fetchQuestions();
     currentQuestion.value = quizStore.getNextQuestion();
@@ -76,20 +72,24 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div>
-        <h1>Quiz</h1>
-        <p>Time left: {{ formatTime(totalTime) }}</p>
-        <div v-if="currentQuestion">
-            <p>{{ currentQuestion.question }}</p>
-            <button v-for="(answer, index) in currentQuestion.answers"
+    <div class="flex flex-col items-center space-y-4 my-8">
+        <h1 class="text-2xl font-bold">Quiz</h1>
+        <p class="text-lg">Time left: {{ formatTime(totalTime) }}</p>
+        <div v-if="currentQuestion" class="w-full max-w-xl text-center">
+            <p class="text-lg font-medium">{{ currentQuestion.question }}</p>
+            <div class="flex flex-wrap justify-center space-x-2">
+                <v-button
+                    v-for="(answer, index) in currentQuestion.answers"
                     :key="index"
+                    class="mt-2"
                     @click="submitAnswer(index)"
                     :disabled="isAnswered">
-                {{ answer }}
-            </button>
-            <div v-if="isAnswered">
+                    {{ answer }}
+                </v-button>
+            </div>
+            <div v-if="isAnswered" class="mt-4">
                 <p>{{ resultMessage }}</p>
-                <button @click="nextQuestion">Next -></button>
+                <v-button @click="nextQuestion">Next -></v-button>
             </div>
         </div>
         <div v-else>

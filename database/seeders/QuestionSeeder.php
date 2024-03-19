@@ -45,7 +45,7 @@ class QuestionSeeder extends Seeder
             DB::table('questions')->insert([
                 'question' => $q['question'],
                 'answers' => json_encode($q['answers']),
-                'correct' => $q['correct'],
+                'correct_answer' => $q['correct'],
                 'quiz_mode_id' => 1,
             ]);
         }
@@ -54,7 +54,7 @@ class QuestionSeeder extends Seeder
             DB::table('questions')->insert([
                 'question' => $q['question'],
                 'answers' => json_encode($q['answers']),
-                'correct' => $q['correct'],
+                'correct_answer' => $q['correct'],
                 'quiz_mode_id' => 2,
             ]);
         }

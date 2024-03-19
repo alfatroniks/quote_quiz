@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\QuestionController;
+use App\Http\Controllers\Api\ScoreController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +20,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/questions/all', [QuestionController::class, 'index']);
+Auth::routes();
+
 Route::get('/questions/session', [QuestionController::class, 'getSessionQuestions']);
 Route::put('/answer/{question}', [QuestionController::class, 'checkAnswer']);
+
+Route::apiResource('/questions', QuestionController::class);
+
+Route::get('/scores', [ScoreController::class, 'index']);
+Route::post('/scores', [ScoreController::class, 'store']);
+
+/*Route::middleware('auth')->group(function(){
+
+});*/
 
