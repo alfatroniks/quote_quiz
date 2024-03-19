@@ -15,7 +15,7 @@ const buttonClass = computed(() =>
     <button
         :class="buttonClass"
         :disabled="disabled"
-        @click="$emit('click')"
+        @click.stop="$emit('click')"
     >
         <slot></slot>
     </button>

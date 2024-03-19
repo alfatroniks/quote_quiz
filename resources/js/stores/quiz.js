@@ -15,7 +15,7 @@ export const useQuizStore = defineStore('quiz', {
         currentQuestionIndex: 0,
         countQuestions: 0,
         totalScore: 0,
-        timeLimit: 300,
+        timeLimit: 300, //todo setting time limit
         timeUsed: 0,
         //todo get data from settings
     }),
@@ -39,7 +39,7 @@ export const useQuizStore = defineStore('quiz', {
         },
         getNextQuestion() {
             const question = this.questions[this.currentQuestionIndex];
-            this.currentQuestionIndex++;
+            this.currentQuestionIndex += 1;
             return question;
         },
         async submitAnswer(questionId, answer) {
