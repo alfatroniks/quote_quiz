@@ -28,3 +28,10 @@ php artisan serve
 You can view it at the link: http://localhost:8000
 
 The task might have implied the use of design patterns, more varied tables, and other, more complex logic. However, I decided not to complicate the app's logic and opted for a simpler approach.
+
+
+If, for some reason, the login details for the admin panel don't autofill, I'm duplicating them here.
+```
+test@example.com
+password
+```
